@@ -15,50 +15,43 @@ if (!defined('ABSPATH')) {
   die;
 }
 
-if (!class_exists('OwwMyAge')) {
+class OwwMyAge {
 
+  public function __construct() {
 
-
-  class OwwMyAge
-  {
-
-    public function __construct()
-    {
-
-      if (!shortcode_exists('my_age')) {
-        add_shortcode('my_age', array($this, 'oww_my_age'));
-      }
+    if ( !shortcode_exists( 'my_age' ) ) {
+      add_shortcode('my_age', array($this, 'oww_my_age'));
     }
 
-    function oww_my_age($atts = [])
-    {
+  }
 
-      if (!isset($atts['birthdate'])) {
-        return '&lt;no birthdate attribute set&gt;';
-      }
+  function oww_my_age ($atts = []) {
 
-      $oww_specified_date  = $atts['birthdate'];
-
-      if (empty($oww_specified_date)) {
-        return '&lt;birthdate is empty&gt;';
-      }
-
-      $oww_birthdate = date_create(sanitize_text_field($oww_specified_date));
-
-      if (!$oww_birthdate) {
-        return '&lt;Invalid date format in birthday&gt;';
-      }
-
-      $oww_current_date = date_create();
-
-      if ($oww_birthdate > $oww_current_date) {
-        return '&lt;Birthdate is in the future&gt;';
-      }
-
-      $oww_my_age   = date_diff($oww_birthdate, $oww_current_date);
-
-      return $oww_my_age->format('%y');
+    if (!isset($atts['birthdate'])) {
+      return '&lt;no birthdate attribute set&gt;';
     }
+
+    $oww_specified_date  = $atts['birthdate'];
+
+    if (empty($oww_specified_date)) {
+      return '&lt;birthdate is empty&gt;';
+    }
+
+    $oww_birthdate = date_create(sanitize_text_field($oww_specified_date));
+
+    if (!$oww_birthdate) {
+      return '&lt;Invalid date format in birthday&gt;';
+    }
+
+    $oww_current_date = date_create();
+
+    if ($oww_birthdate > $oww_current_date) {
+      return '&lt;Birthdate is in the future&gt;';
+    }
+
+    $oww_my_age   = date_diff($oww_birthdate, $oww_current_date);
+
+    return $oww_my_age->format('%y');
   }
 }
 
